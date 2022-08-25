@@ -1,12 +1,7 @@
+import { ITimline } from '../utils/Types';
+
 interface TypesTimeline {
-  timelineData: [
-    {
-      id: number;
-      title: string;
-      description: string;
-      icon: JSX.Element;
-    },
-  ];
+  timelineData: ITimline[];
 }
 
 function Timeline({ timelineData }: TypesTimeline): JSX.Element {

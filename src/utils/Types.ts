@@ -6,4 +6,9 @@ interface ITimline {
   icon: JSX.Element;
 }
 
-export type { ITimline };
+// interface ITimeline Array
+interface ITimelineArray {
+  [index: number]: ITimline;
+}
+
+export type { ITimline, ITimelineArray };
