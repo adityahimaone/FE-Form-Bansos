@@ -1,7 +1,8 @@
-import RoutesViews from './routes/Main';
-import { store, persistor } from './store/store';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+
+import RoutesViews from './routes/Main';
+import { store, persistor } from './store/store';
 
 function App(): JSX.Element {
   return (

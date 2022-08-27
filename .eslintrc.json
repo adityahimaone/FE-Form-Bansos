@@ -23,6 +23,8 @@
   },
   "plugins": ["react", "@typescript-eslint", "prettier", "import"],
   "rules": {
+    "import/extensions": "off",
+    "jsx-a11y/label-has-associated-control": "off",
     "prettier/prettier": "error",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",

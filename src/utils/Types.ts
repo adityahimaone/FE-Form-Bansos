@@ -6,7 +6,6 @@ interface ITimline {
   icon: JSX.Element;
 }
 
-// interface ITimeline Array
 interface ITimelineArray {
   [index: number]: ITimline;
 }

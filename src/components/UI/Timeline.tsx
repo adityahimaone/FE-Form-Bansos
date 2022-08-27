@@ -1,4 +1,4 @@
-import { ITimline } from '../utils/Types';
+import { ITimline } from '../../utils/Types';
 
 interface TypesTimeline {
   timelineData: ITimline[];
