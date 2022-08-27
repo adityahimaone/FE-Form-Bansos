@@ -1,12 +1,15 @@
-export interface IProvince {
+export interface IDropdown {
   value: string;
   label: string;
 }
 
-export interface IInitialStateProvince {
+export interface IInitialStateDropdown {
   loading: boolean;
   data: {
-    provinces: IProvince[];
+    provinces: IDropdown[];
+    regencies: IDropdown[];
+    districts: IDropdown[];
+    villages: IDropdown[];
   };
   error: string | null;
 }

@@ -7,7 +7,7 @@ import InputFile from '@/components/UI/Form/InputFile';
 import InputSelect from '@/components/UI/Form/InputSelect';
 import InputText from '@/components/UI/Form/InputText';
 import Timeline from '@/components/UI/Timeline';
-import { getProvinces } from '@/store/dropdownSlice';
+import { getProvinces, getDistricts, getRegencies, getVillages } from '@/store/dropdownSlice';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import ConstantTimeline from '@/utils/ContantsTimeLine';
 
@@ -55,8 +55,14 @@ function Home(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const provincesList = useAppSelector((state) => state.dropdown.data.provinces);
+  const regenciesList = useAppSelector((state) => state.dropdown.data.regencies);
+  const districtsList = useAppSelector((state) => state.dropdown.data.districts);
+  const villagesList = useAppSelector((state) => state.dropdown.data.villages);
 
   const [selectProvince, setSelectProvince] = useState<string>('0');
+  const [selectRegency, setSelectRegency] = useState<string>('0');
+  const [selectDistrict, setSelectDistrict] = useState<string>('0');
+  const [selectVillage, setSelectVillage] = useState<string>('0');
 
   const formikFormData = useFormik({
     initialValues: initialValuesFormData,
@@ -71,11 +77,38 @@ function Home(): JSX.Element {
     formikFormData.setFieldValue('province', selectedOptions.label);
   };
 
+  const onChangeSelectRegency = (selectedOptions: any) => {
+    setSelectRegency(selectedOptions.value);
+    formikFormData.setFieldValue('regency', selectedOptions.label);
+  };
+
+  const onChangeSelectDistrict = (selectedOptions: any) => {
+    setSelectDistrict(selectedOptions.value);
+    formikFormData.setFieldValue('district', selectedOptions.label);
+  };
+
+  const onChangeSelectVillage = (selectedOptions: any) => {
+    setSelectVillage(selectedOptions.value);
+    formikFormData.setFieldValue('village', selectedOptions.label);
+  };
+
   console.log(selectProvince, formikFormData.values, 'selectProvince');
 
   useEffect(() => {
     dispatch(getProvinces());
   }, []);
+
+  useEffect(() => {
+    dispatch(getRegencies(selectProvince));
+  }, [selectProvince]);
+
+  useEffect(() => {
+    dispatch(getDistricts(selectRegency));
+  }, [selectRegency]);
+
+  useEffect(() => {
+    dispatch(getVillages(selectDistrict));
+  }, [selectDistrict]);
 
   return (
     <div className="mx-2 grid grid-cols-12 gap-2">
@@ -177,6 +210,36 @@ function Home(): JSX.Element {
                 touched={formikFormData.touched.province}
                 errors={formikFormData.errors.province}
                 onChange={onChangeSelectProvince}
+              />
+            </div>
+            <div>
+              <InputSelect
+                options={regenciesList}
+                name="regency"
+                label="Pilih Kabupaten/Kota"
+                touched={formikFormData.touched.regency}
+                errors={formikFormData.errors.province}
+                onChange={onChangeSelectRegency}
+              />
+            </div>
+            <div>
+              <InputSelect
+                options={districtsList}
+                name="district"
+                label="Pilih Kecamatan"
+                touched={formikFormData.touched.district}
+                errors={formikFormData.errors.district}
+                onChange={onChangeSelectDistrict}
+              />
+            </div>
+            <div>
+              <InputSelect
+                options={villagesList}
+                name="village"
+                label="Pilih Desa/Kelurahan"
+                touched={formikFormData.touched.village}
+                errors={formikFormData.errors.village}
+                onChange={onChangeSelectVillage}
               />
             </div>
             <div className="flex justify-end">

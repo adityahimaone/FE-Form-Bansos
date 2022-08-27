@@ -1,6 +1,6 @@
-import { IProvince } from '@/store/types';
+import { IDropdown } from '@/store/types';
 
-const TransformDataReactSelect = (prevData: any[]): IProvince[] =>
+const TransformDataReactSelect = (prevData: any[]): IDropdown[] =>
   prevData.map((item: { id: string; name: string }) => ({
     value: item.id,
     label: item.name,
