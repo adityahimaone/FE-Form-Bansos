@@ -1,55 +1,62 @@
 import { useFormik } from 'formik';
+import { useEffect, useState } from 'react';
+import Select from 'react-select';
 import * as Yup from 'yup';
 
-import LayoutDefault from '../components/Layout/Default';
-import InputFile from '../components/UI/Form/InputFile';
-import InputText from '../components/UI/Form/InputText';
-import Timeline from '../components/UI/Timeline';
-import { useAppSelector, useAppDispatch } from '../store/hooks';
-import ConstantTimeline from '../utils/ContantsTimeLine';
+import InputFile from '@/components/UI/Form/InputFile';
+import InputSelect from '@/components/UI/Form/InputSelect';
+import InputText from '@/components/UI/Form/InputText';
+import Timeline from '@/components/UI/Timeline';
+import { getProvinces } from '@/store/dropdownSlice';
+import { useAppSelector, useAppDispatch } from '@/store/hooks';
+import ConstantTimeline from '@/utils/ContantsTimeLine';
+
+const schemaFormUser = Yup.object().shape({
+  name: Yup.string().required('Nama tidak boleh kosong'),
+  nik: Yup.number().required('NIK tidak boleh kosong').max(16, 'NIK tidak boleh lebih dari 16 karakter'),
+  no_kk: Yup.number().required('Nomor KK tidak boleh kosong').max(16, 'Nomor KK tidak boleh lebih dari 16 karakter'),
+  img_ktp: Yup.string().required('Foto KTP tidak boleh kosong'),
+  img_kk: Yup.string().required('Foto KK tidak boleh kosong'),
+  age: Yup.number().required('Umur tidak boleh kosong'),
+  gender: Yup.string().required('Jenis Kelamin tidak boleh kosong'),
+  province: Yup.string().required('Provinsi tidak boleh kosong'),
+  regency: Yup.string().required('Kabupaten tidak boleh kosong'),
+  district: Yup.string().required('Kecamatan tidak boleh kosong'),
+  village: Yup.string().required('Desa tidak boleh kosong'),
+  address: Yup.string().required('Alamat tidak boleh kosong'),
+  rt: Yup.number().required('RT tidak boleh kosong'),
+  rw: Yup.number().required('RW tidak boleh kosong'),
+  income_before_pandemic: Yup.number().required('Pendapatan sebelum pandemi tidak boleh kosong'),
+  income_after_pandemic: Yup.number().required('Pendapatan setelah pandemi tidak boleh kosong'),
+  reason: Yup.string().required('Alasan membutuhkan bantuan tidak boleh kosong'),
+});
+
+const initialValuesFormData = {
+  name: '',
+  nik: '',
+  no_kk: '',
+  img_ktp: '',
+  img_kk: '',
+  age: '',
+  gender: '',
+  province: '',
+  regency: '',
+  district: '',
+  village: '',
+  address: '',
+  rt: '',
+  rw: '',
+  income_before_pandemic: '',
+  income_after_pandemic: '',
+  reason: '',
+};
 
 function Home(): JSX.Element {
   const dispatch = useAppDispatch();
 
-  const schemaFormUser = Yup.object().shape({
-    name: Yup.string().required('Nama tidak boleh kosong'),
-    nik: Yup.number().required('NIK tidak boleh kosong').max(16, 'NIK tidak boleh lebih dari 16 karakter'),
-    no_kk: Yup.number().required('Nomor KK tidak boleh kosong').max(16, 'Nomor KK tidak boleh lebih dari 16 karakter'),
-    img_ktp: Yup.string().required('Foto KTP tidak boleh kosong'),
-    img_kk: Yup.string().required('Foto KK tidak boleh kosong'),
-    age: Yup.number().required('Umur tidak boleh kosong'),
-    gender: Yup.string().required('Jenis Kelamin tidak boleh kosong'),
-    province: Yup.string().required('Provinsi tidak boleh kosong'),
-    regency: Yup.string().required('Kabupaten tidak boleh kosong'),
-    district: Yup.string().required('Kecamatan tidak boleh kosong'),
-    village: Yup.string().required('Desa tidak boleh kosong'),
-    address: Yup.string().required('Alamat tidak boleh kosong'),
-    rt: Yup.number().required('RT tidak boleh kosong'),
-    rw: Yup.number().required('RW tidak boleh kosong'),
-    income_before_pandemic: Yup.number().required('Pendapatan sebelum pandemi tidak boleh kosong'),
-    income_after_pandemic: Yup.number().required('Pendapatan setelah pandemi tidak boleh kosong'),
-    reason: Yup.string().required('Alasan membutuhkan bantuan tidak boleh kosong'),
-  });
+  const provincesList = useAppSelector((state) => state.dropdown.data.provinces);
 
-  const initialValuesFormData = {
-    name: '',
-    nik: '',
-    no_kk: '',
-    img_ktp: '',
-    img_kk: '',
-    age: '',
-    gender: '',
-    province: '',
-    regency: '',
-    district: '',
-    village: '',
-    address: '',
-    rt: '',
-    rw: '',
-    income_before_pandemic: '',
-    income_after_pandemic: '',
-    reason: '',
-  };
+  const [selectProvince, setSelectProvince] = useState<string>('0');
 
   const formikFormData = useFormik({
     initialValues: initialValuesFormData,
@@ -58,6 +65,17 @@ function Home(): JSX.Element {
       console.log(values);
     },
   });
+
+  const onChangeSelectProvince = (selectedOptions: any) => {
+    setSelectProvince(selectedOptions.value);
+    formikFormData.setFieldValue('province', selectedOptions.label);
+  };
+
+  console.log(selectProvince, formikFormData.values, 'selectProvince');
+
+  useEffect(() => {
+    dispatch(getProvinces());
+  }, []);
 
   return (
     <div className="mx-2 grid grid-cols-12 gap-2">
@@ -150,6 +168,16 @@ function Home(): JSX.Element {
                   </label>
                 </div>
               </div>
+            </div>
+            <div>
+              <InputSelect
+                options={provincesList}
+                name="provinces"
+                label="Pilih Provinsi"
+                touched={formikFormData.touched.province}
+                errors={formikFormData.errors.province}
+                onChange={onChangeSelectProvince}
+              />
             </div>
             <div className="flex justify-end">
               <button className="button-primary" type="submit">

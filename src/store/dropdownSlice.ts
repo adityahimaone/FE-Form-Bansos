@@ -4,6 +4,8 @@ import axios from 'axios';
 
 import { IProvince, IInitialStateProvince } from './types';
 
+import TransformDataReactSelect from '@/utils/transform-react-select';
+
 const InitialStateProvince: IInitialStateProvince = {
   loading: false,
   data: {
@@ -28,7 +30,8 @@ export const dropdownSlice = createSlice({
       })
       .addCase(getProvinces.fulfilled, (state, action: PayloadAction<IProvince[]>) => {
         state.loading = false;
-        state.data.provinces = action.payload;
+
+        state.data.provinces = TransformDataReactSelect(action.payload);
         state.error = null;
       })
       .addCase(getProvinces.rejected, (state, action) => {

@@ -1,8 +1,9 @@
-import { IProvince } from '../store/types';
+import { IProvince } from '@/store/types';
 
-const TransformDataReactSelect = (prevData: IProvince[]) =>
-  prevData.map((data) => ({
-    value: data.id,
-    label: data.name,
+const TransformDataReactSelect = (prevData: any[]): IProvince[] =>
+  prevData.map((item: { id: string; name: string }) => ({
+    value: item.id,
+    label: item.name,
   }));
+
 export default TransformDataReactSelect;

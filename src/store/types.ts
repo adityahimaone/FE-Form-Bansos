@@ -1,6 +1,6 @@
 export interface IProvince {
-  id: string;
-  name: string;
+  value: string;
+  label: string;
 }
 
 export interface IInitialStateProvince {
