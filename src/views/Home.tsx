@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import InputFile from '@/components/UI/Form/InputFile';
 import InputSelect from '@/components/UI/Form/InputSelect';
 import InputText from '@/components/UI/Form/InputText';
+import InputTextArea from '@/components/UI/Form/InputTextArea';
 import Timeline from '@/components/UI/Timeline';
 import { getProvinces, getDistricts, getRegencies, getVillages } from '@/store/dropdownSlice';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
@@ -13,8 +14,8 @@ import ConstantTimeline from '@/utils/ContantsTimeLine';
 
 const schemaFormUser = Yup.object().shape({
   name: Yup.string().required('Nama tidak boleh kosong'),
-  nik: Yup.number().required('NIK tidak boleh kosong').max(16, 'NIK tidak boleh lebih dari 16 karakter'),
-  no_kk: Yup.number().required('Nomor KK tidak boleh kosong').max(16, 'Nomor KK tidak boleh lebih dari 16 karakter'),
+  nik: Yup.string().required('NIK tidak boleh kosong').min(16, 'NIK harus 16 karakter'),
+  no_kk: Yup.string().required('Nomor KK tidak boleh kosong').min(16, 'Nomor KK harus 16 karakter'),
   img_ktp: Yup.string().required('Foto KTP tidak boleh kosong'),
   img_kk: Yup.string().required('Foto KK tidak boleh kosong'),
   age: Yup.number().required('Umur tidak boleh kosong'),
@@ -240,6 +241,16 @@ function Home(): JSX.Element {
                 touched={formikFormData.touched.village}
                 errors={formikFormData.errors.village}
                 onChange={onChangeSelectVillage}
+              />
+            </div>
+            <div>
+              <InputTextArea
+                name="address"
+                label="Alamat"
+                value={formikFormData.values.address}
+                onChange={formikFormData.handleChange}
+                touched={formikFormData.touched.address}
+                errors={formikFormData.errors.address}
               />
             </div>
             <div className="flex justify-end">

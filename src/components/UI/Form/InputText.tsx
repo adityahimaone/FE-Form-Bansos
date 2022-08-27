@@ -18,14 +18,23 @@ function TextInput({ type, name, label, maxLength, onChange, value, touched, err
         {label}
       </label>
       <input
-        type={type}
+        type="text"
         name={name}
-        id={`floating_input_${name}`}
+        id={`text_input_${name}`}
         onChange={onChange}
         value={value}
         maxLength={maxLength}
         className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
         placeholder="name@flowbite.com"
+        onKeyPress={
+          type === 'number'
+            ? (event: React.KeyboardEvent<HTMLInputElement>) => {
+                if (!/[0-9]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }
+            : undefined
+        }
       />
       {touched && errors ? <span className="text-xs text-red-500">{errors}</span> : null}
     </div>
