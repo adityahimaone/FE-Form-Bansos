@@ -23,6 +23,7 @@ const previewSlice = createSlice({
       state.data.img_ktp = action.payload.img_ktp;
       state.data.img_kk = action.payload.img_kk;
       state.data.age = parseInt(action.payload.age, 10);
+      state.data.gender = action.payload.gender;
       state.data.province = action.payload.province;
       state.data.regency = action.payload.regency;
       state.data.district = action.payload.district;

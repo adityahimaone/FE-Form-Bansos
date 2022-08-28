@@ -1,10 +1,16 @@
-import { ITimline } from '../../utils/Types';
+import classNames from 'classnames';
+import { useMatch } from 'react-router-dom';
+
+import { ITimline } from '@/utils/Types';
 
 interface TypesTimeline {
   timelineData: ITimline[];
 }
 
 function Timeline({ timelineData }: TypesTimeline): JSX.Element {
+  const matchHome = useMatch('/');
+  const matchPreviw = useMatch('/preview');
+
   return (
     <ol className="relative border-l border-gray-200">
       {timelineData.map((item) => (
