@@ -4,6 +4,7 @@ interface ITextInput {
   type?: string;
   name: string;
   label: string;
+  placeholder?: string;
   maxLength?: number;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -11,7 +12,7 @@ interface ITextInput {
   errors: string | undefined;
 }
 
-function TextInput({ type, name, label, maxLength, onChange, value, touched, errors }: ITextInput) {
+function TextInput({ type, name, label, placeholder, maxLength, onChange, value, touched, errors }: ITextInput) {
   return (
     <div className="mb-6">
       <label htmlFor={`floating_input_${name}`} className="mb-2 block text-sm font-medium text-gray-900">
@@ -25,7 +26,7 @@ function TextInput({ type, name, label, maxLength, onChange, value, touched, err
         value={value}
         maxLength={maxLength}
         className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-        placeholder="name@flowbite.com"
+        placeholder={placeholder}
         onKeyPress={
           type === 'number'
             ? (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -44,6 +45,7 @@ function TextInput({ type, name, label, maxLength, onChange, value, touched, err
 TextInput.defaultProps = {
   type: 'text',
   value: '',
+  placeholder: 'Ketikan Inputan',
   maxLength: undefined,
   onChange: () => {},
 };

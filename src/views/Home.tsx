@@ -1,16 +1,20 @@
-import { useFormik } from 'formik';
+/* eslint-disable @typescript-eslint/no-shadow */
+import { Value } from 'classnames';
+import { useFormik, Field } from 'formik';
 import { useEffect, useState } from 'react';
-import Select from 'react-select';
+import { ActionMeta, OnChangeValue } from 'react-select';
 import * as Yup from 'yup';
 
 import InputFile from '@/components/UI/Form/InputFile';
 import InputSelect from '@/components/UI/Form/InputSelect';
+import InputSelectCreate from '@/components/UI/Form/InputSelectCreate';
 import InputText from '@/components/UI/Form/InputText';
 import InputTextArea from '@/components/UI/Form/InputTextArea';
 import Timeline from '@/components/UI/Timeline';
 import { getProvinces, getDistricts, getRegencies, getVillages } from '@/store/dropdownSlice';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import ConstantTimeline from '@/utils/ContantsTimeLine';
+import { ListReason } from '@/utils/list-data';
 
 const schemaFormUser = Yup.object().shape({
   name: Yup.string().required('Nama tidak boleh kosong'),
@@ -39,7 +43,7 @@ const initialValuesFormData = {
   img_ktp: '',
   img_kk: '',
   age: '',
-  gender: '',
+  gender: 'Laki-laki',
   province: '',
   regency: '',
   district: '',
@@ -60,10 +64,11 @@ function Home(): JSX.Element {
   const districtsList = useAppSelector((state) => state.dropdown.data.districts);
   const villagesList = useAppSelector((state) => state.dropdown.data.villages);
 
-  const [selectProvince, setSelectProvince] = useState<string>('0');
-  const [selectRegency, setSelectRegency] = useState<string>('0');
-  const [selectDistrict, setSelectDistrict] = useState<string>('0');
-  const [selectVillage, setSelectVillage] = useState<string>('0');
+  const [selectProvince, setSelectProvince] = useState<string | undefined>(undefined);
+  const [selectRegency, setSelectRegency] = useState<string | undefined>(undefined);
+  const [selectDistrict, setSelectDistrict] = useState<string | undefined>(undefined);
+  const [selectVillage, setSelectVillage] = useState<string | undefined>(undefined);
+  const [agreement, setAgreement] = useState<boolean>(false);
 
   const formikFormData = useFormik({
     initialValues: initialValuesFormData,
@@ -73,43 +78,72 @@ function Home(): JSX.Element {
     },
   });
 
-  const onChangeSelectProvince = (selectedOptions: any) => {
-    setSelectProvince(selectedOptions.value);
-    formikFormData.setFieldValue('province', selectedOptions.label);
+  const onChangeRadioButton = (e: React.ChangeEvent<HTMLInputElement>) => {
+    formikFormData.setFieldValue('gender', e.target.value);
   };
 
-  const onChangeSelectRegency = (selectedOptions: any) => {
-    setSelectRegency(selectedOptions.value);
-    formikFormData.setFieldValue('regency', selectedOptions.label);
+  type SelectValue = {
+    label: string;
+    value: string;
   };
 
-  const onChangeSelectDistrict = (selectedOptions: any) => {
-    setSelectDistrict(selectedOptions.value);
-    formikFormData.setFieldValue('district', selectedOptions.label);
+  const onChangeSelectAddress = (value: OnChangeValue<SelectValue, false>, actionMeta: ActionMeta<SelectValue>) => {
+    switch (actionMeta.name) {
+      case 'province':
+        setSelectProvince(value?.value);
+        formikFormData.setFieldValue('province', value?.label);
+        dispatch(getRegencies(value?.value));
+        break;
+      case 'regency':
+        setSelectRegency(value?.value);
+        formikFormData.setFieldValue('regency', value?.label);
+        dispatch(getDistricts(value?.value));
+        break;
+      case 'district':
+        setSelectDistrict(value?.value);
+        formikFormData.setFieldValue('district', value?.label);
+        dispatch(getVillages(value?.value));
+        break;
+      case 'village':
+        setSelectVillage(value?.value);
+        formikFormData.setFieldValue('village', value?.label);
+        break;
+      default:
+        break;
+    }
   };
 
-  const onChangeSelectVillage = (selectedOptions: any) => {
-    setSelectVillage(selectedOptions.value);
-    formikFormData.setFieldValue('village', selectedOptions.label);
+  const onChangeSelectReason = (value: OnChangeValue<SelectValue, false>, actionMeta: ActionMeta<SelectValue>) => {
+    formikFormData.setFieldValue('reason', value?.label);
   };
 
-  console.log(selectProvince, formikFormData.values, 'selectProvince');
+  const onChangeImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name } = e.target;
+    console.log(name, 'name');
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      const file: any = e.target.files?.[0];
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(file);
+    })
+      .then((result) => {
+        formikFormData.setFieldValue(name, result);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const onChangeCheckboxAgreement = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAgreement(e.target.checked);
+  };
+
+  console.log(agreement, selectProvince, formikFormData.values, 'selectProvince');
 
   useEffect(() => {
     dispatch(getProvinces());
   }, []);
-
-  useEffect(() => {
-    dispatch(getRegencies(selectProvince));
-  }, [selectProvince]);
-
-  useEffect(() => {
-    dispatch(getDistricts(selectRegency));
-  }, [selectRegency]);
-
-  useEffect(() => {
-    dispatch(getVillages(selectDistrict));
-  }, [selectDistrict]);
 
   return (
     <div className="mx-2 grid grid-cols-12 gap-2">
@@ -130,6 +164,7 @@ function Home(): JSX.Element {
             <InputText
               name="name"
               label="Nama"
+              placeholder="Nama Lengkap"
               value={formikFormData.values.name}
               onChange={formikFormData.handleChange}
               touched={formikFormData.touched.name}
@@ -139,6 +174,7 @@ function Home(): JSX.Element {
               name="nik"
               label="NIK"
               type="number"
+              placeholder="16 digit NIK"
               value={formikFormData.values.nik}
               onChange={formikFormData.handleChange}
               touched={formikFormData.touched.nik}
@@ -147,8 +183,9 @@ function Home(): JSX.Element {
             />
             <InputText
               name="no_kk"
-              label="Nomor Kartu Keluarga"
+              label="Nomer Kartu Keluarga"
               type="number"
+              placeholder="16 digit Kartu Keluarga"
               value={formikFormData.values.no_kk}
               onChange={formikFormData.handleChange}
               touched={formikFormData.touched.no_kk}
@@ -159,7 +196,7 @@ function Home(): JSX.Element {
               name="img_ktp"
               label="Unggah Foto KTP"
               value={formikFormData.values.img_ktp}
-              onChange={formikFormData.handleChange}
+              onChange={onChangeImageUpload}
               touched={formikFormData.touched.img_ktp}
               errors={formikFormData.errors.img_ktp}
             />
@@ -167,9 +204,20 @@ function Home(): JSX.Element {
               name="img_kk"
               label="Unggah Foto Kartu Keluarga"
               value={formikFormData.values.img_kk}
-              onChange={formikFormData.handleChange}
+              onChange={onChangeImageUpload}
               touched={formikFormData.touched.img_kk}
               errors={formikFormData.errors.img_kk}
+            />
+            <InputText
+              name="age"
+              label="Umur"
+              type="number"
+              placeholder="Masukan umur"
+              value={formikFormData.values.age}
+              onChange={formikFormData.handleChange}
+              touched={formikFormData.touched.age}
+              errors={formikFormData.errors.age}
+              maxLength={3}
             />
             <div>
               <label htmlFor="floating_input_gender" className="mb-2 block text-sm font-medium text-gray-900">
@@ -178,10 +226,12 @@ function Home(): JSX.Element {
               <div className="mb-2 flex flex-row items-center space-x-5">
                 <div className="flex items-center">
                   <input
-                    id="default-radio-1"
+                    id="gender-radio-1"
                     type="radio"
-                    value=""
-                    name="default-radio"
+                    value="Laki-laki"
+                    name="gender"
+                    checked={formikFormData.values.gender === 'Laki-laki'}
+                    onChange={onChangeRadioButton}
                     className="0 h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
                   />
                   <label htmlFor="default-radio-1" className="ml-2 text-sm font-medium text-gray-900 ">
@@ -190,11 +240,12 @@ function Home(): JSX.Element {
                 </div>
                 <div className="flex items-center">
                   <input
-                    checked
-                    id="default-radio-2"
+                    id="gender-radio-2"
                     type="radio"
-                    value=""
-                    name="default-radio"
+                    value="Perempuan"
+                    name="gender"
+                    checked={formikFormData.values.gender === 'Perempuan'}
+                    onChange={onChangeRadioButton}
                     className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
                   />
                   <label htmlFor="default-radio-2" className="ml-2 text-sm font-medium text-gray-900">
@@ -206,55 +257,106 @@ function Home(): JSX.Element {
             <div>
               <InputSelect
                 options={provincesList}
-                name="provinces"
-                label="Pilih Provinsi"
+                name="province"
+                label="Provinsi"
+                placeholder="Pilih   Provinsi"
                 touched={formikFormData.touched.province}
                 errors={formikFormData.errors.province}
-                onChange={onChangeSelectProvince}
+                onChange={onChangeSelectAddress}
               />
             </div>
             <div>
               <InputSelect
                 options={regenciesList}
                 name="regency"
-                label="Pilih Kabupaten/Kota"
+                label="Kabupaten/Kota"
+                placeholder="Pilih Kabupaten/Kota"
                 touched={formikFormData.touched.regency}
                 errors={formikFormData.errors.province}
-                onChange={onChangeSelectRegency}
+                onChange={onChangeSelectAddress}
               />
             </div>
             <div>
               <InputSelect
                 options={districtsList}
                 name="district"
-                label="Pilih Kecamatan"
+                label="Kecamatan"
+                placeholder="Pilih Kecamatan"
                 touched={formikFormData.touched.district}
                 errors={formikFormData.errors.district}
-                onChange={onChangeSelectDistrict}
+                onChange={onChangeSelectAddress}
               />
             </div>
             <div>
               <InputSelect
                 options={villagesList}
                 name="village"
-                label="Pilih Desa/Kelurahan"
+                label="Desa/Kelurahan"
+                placeholder="Pilih Kelurahan"
                 touched={formikFormData.touched.village}
                 errors={formikFormData.errors.village}
-                onChange={onChangeSelectVillage}
+                onChange={onChangeSelectAddress}
               />
             </div>
             <div>
               <InputTextArea
                 name="address"
                 label="Alamat"
+                placeholder="Masukan Alamat Lengkap"
                 value={formikFormData.values.address}
                 onChange={formikFormData.handleChange}
                 touched={formikFormData.touched.address}
                 errors={formikFormData.errors.address}
               />
             </div>
+            <InputText
+              name="income_before_pandemic"
+              label="Penghasilan sebelum pandemi"
+              type="number"
+              placeholder="Masukan penghasilan sebelum pandemi (dalam angka)"
+              value={formikFormData.values.income_before_pandemic}
+              onChange={formikFormData.handleChange}
+              touched={formikFormData.touched.income_before_pandemic}
+              errors={formikFormData.errors.income_before_pandemic}
+            />
+            <InputText
+              name="income_after_pandemic"
+              label="Penghasilan setelah pandemi"
+              type="number"
+              placeholder="Masukan penghasilan sesudah pandemi (dalam angka)"
+              value={formikFormData.values.income_after_pandemic}
+              onChange={formikFormData.handleChange}
+              touched={formikFormData.touched.income_after_pandemic}
+              errors={formikFormData.errors.income_after_pandemic}
+            />
+            <InputSelectCreate
+              options={ListReason}
+              name="reason"
+              label="Pilih Alasan membutuhkan bantuan"
+              placeholder="Pilih salah satu alasan atau ketikan alasan"
+              touched={formikFormData.touched.reason}
+              errors={formikFormData.errors.reason}
+              onChange={onChangeSelectReason}
+              helper="Pilih alasan membutuhkan bantuan atau ketik untuk membuat alasan baru"
+            />
+            <div className="mb-6 flex items-start">
+              <div className="flex h-5 items-center">
+                <input
+                  id="agreement"
+                  type="checkbox"
+                  value=""
+                  onChange={onChangeCheckboxAgreement}
+                  className="focus:ring-3 h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300"
+                  required
+                />
+              </div>
+              <label htmlFor="agreement" className="ml-2 text-sm font-medium text-gray-900 ">
+                Saya menyatakan bahwa data yang diisikan adalah benar dan siap mempertanggungjawabkan apabila ditemukan
+                ketidaksesuaian dalam data tersebut.
+              </label>
+            </div>
             <div className="flex justify-end">
-              <button className="button-primary" type="submit">
+              <button disabled={!agreement} className="button-primary" type="submit">
                 Kirim
               </button>
             </div>
@@ -266,3 +368,6 @@ function Home(): JSX.Element {
 }
 
 export default Home;
+function reject(error: any) {
+  throw new Error('Function not implemented.');
+}

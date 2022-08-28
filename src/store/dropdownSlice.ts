@@ -22,17 +22,17 @@ export const getProvinces = createAsyncThunk('get/fetchProvinces', async () => {
   return response.data;
 });
 
-export const getRegencies = createAsyncThunk('get/fetchRegencies', async (provinceId: string) => {
+export const getRegencies = createAsyncThunk('get/fetchRegencies', async (provinceId: string | undefined) => {
   const response = await axios.get(`http://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provinceId}.json`);
   return response.data;
 });
 
-export const getDistricts = createAsyncThunk('get/fetchDistricts', async (regencyId: string) => {
+export const getDistricts = createAsyncThunk('get/fetchDistricts', async (regencyId: string | undefined) => {
   const response = await axios.get(`http://www.emsifa.com/api-wilayah-indonesia/api/districts/${regencyId}.json`);
   return response.data;
 });
 
-export const getVillages = createAsyncThunk('get/fetchVillages', async (villagesId: string) => {
+export const getVillages = createAsyncThunk('get/fetchVillages', async (villagesId: string | undefined) => {
   const response = await axios.get(`http://www.emsifa.com/api-wilayah-indonesia/api/villages/${villagesId}.json`);
   return response.data;
 });

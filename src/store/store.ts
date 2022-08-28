@@ -12,6 +12,7 @@ const logger = createLogger();
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist: ['dropdown'],
 };
 
 const reducers = combineReducers({
