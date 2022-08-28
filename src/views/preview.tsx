@@ -1,3 +1,4 @@
+import { ArrowLeftIcon } from '@heroicons/react/24/solid';
 import { Link } from 'react-router-dom';
 
 import PreviewDataImg from '@/components/UI/PreviewDataImg';
@@ -31,7 +32,8 @@ function Preview() {
         <PreviewDataImg url={previewData.img_ktp} label="Foto KTP" />
         <PreviewDataImg url={previewData.img_kk} label="Foto KK" />
         <div className="flex justify-end">
-          <Link to="/" className="button-primary">
+          <Link to="/" className="button-primary flex items-center">
+            <ArrowLeftIcon className="ml-1 h-4 w-4" />
             Kembali
           </Link>
         </div>

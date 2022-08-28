@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import LayoutDefault from '@/components/Layout/Default';
 import LayoutTimeline from '@/components/Layout/WithTimeline';
 import Home from '@/views/home';
 import Preview from '@/views/preview';

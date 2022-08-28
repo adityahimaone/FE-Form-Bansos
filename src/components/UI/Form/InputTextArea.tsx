@@ -1,3 +1,5 @@
+import classNames from 'classnames';
+
 interface ITextAreaInput {
   name: string;
   label: string;
@@ -19,10 +21,18 @@ function InputTextArea({
   touched,
   errors,
 }: ITextAreaInput): JSX.Element {
+  const classTextArea = classNames(
+    'block w-full rounded-lg border p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500',
+    {
+      'border-gray-300 bg-gray-50': !touched && !errors,
+      'border-red-500 bg-red-50': touched && errors,
+    },
+  );
   return (
     <div className="mb-6">
       <label htmlFor={`text_area_input_${name}`} className="mb-2 block text-sm font-medium text-gray-900">
         {label}
+        <sup className="text-red-500">*</sup>
       </label>
       <textarea
         name={name}
@@ -30,7 +40,7 @@ function InputTextArea({
         onChange={onChange}
         value={value}
         maxLength={maxLength}
-        className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+        className={classTextArea}
         placeholder={placeholder}
         rows={3}
       />

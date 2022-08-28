@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface IPreviewDataText {
-  name: string | number;
+  name: string | number | undefined;
   label: string;
 }
 

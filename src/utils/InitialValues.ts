@@ -24,21 +24,21 @@ const initialStatePreview: IInitialFormData = {
 
 const initialValuesFormData: IInitialValuesFormData = {
   name: '',
-  nik: '',
-  no_kk: '',
+  nik: undefined,
+  no_kk: undefined,
   img_ktp: '',
   img_kk: '',
-  age: '',
+  age: undefined,
   gender: 'Laki-laki',
   province: '',
   regency: '',
   district: '',
   village: '',
   address: '',
-  rt: '',
-  rw: '',
-  income_before_pandemic: '',
-  income_after_pandemic: '',
+  rt: undefined,
+  rw: undefined,
+  income_before_pandemic: undefined,
+  income_after_pandemic: undefined,
   reason: '',
 };
 

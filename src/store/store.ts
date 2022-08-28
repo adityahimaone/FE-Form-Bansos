@@ -1,5 +1,5 @@
 import { configureStore, ThunkAction, Action, AnyAction } from '@reduxjs/toolkit';
-import { combineReducers, applyMiddleware } from 'redux';
+import { combineReducers } from 'redux';
 import { createLogger } from 'redux-logger';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';

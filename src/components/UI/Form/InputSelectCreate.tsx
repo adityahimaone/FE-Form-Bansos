@@ -12,6 +12,15 @@ interface ISelectCreateableInput {
   helper?: string;
 }
 
+const customStyles = {
+  control: (styles: any) => ({
+    ...styles,
+    backgroundColor: 'rgb(249 250 251)',
+    borderColor: 'rgb(209 213 219)',
+    borderRadius: 8,
+  }),
+};
+
 function InputSelectCreate({
   options,
   name,
@@ -26,9 +35,16 @@ function InputSelectCreate({
     <div className="mb-6">
       <label htmlFor={`floating_input_${name}`} className="mb-2 block text-sm font-medium text-gray-900">
         {label}
+        <sup className="text-red-500">*</sup>
       </label>
-      <CreatableSelect isClearable placeholder={placeholder} onChange={onChange} options={options} />
-      <p id="helper-text-explanation" className="d mt-2 text-sm text-gray-500">
+      <CreatableSelect
+        isClearable
+        styles={customStyles}
+        placeholder={placeholder}
+        onChange={onChange}
+        options={options}
+      />
+      <p id="helper-text-explanation" className="d mt-2 text-xs font-thin text-gray-500">
         {helper}
       </p>
       {touched && errors ? <span className="text-xs text-red-500">{errors}</span> : null}

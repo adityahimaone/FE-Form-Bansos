@@ -1,4 +1,4 @@
-import React from 'react';
+import classNames from 'classnames';
 
 interface IInputFile {
   name: string;
@@ -10,16 +10,21 @@ interface IInputFile {
 }
 
 function InputFile({ name, label, onChange, value, touched, errors }: IInputFile): JSX.Element {
+  const classInputFile = classNames(
+    'flex h-40 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed  bg-gray-50 hover:bg-gray-100 ',
+    {
+      'border-gray-300': !touched && !errors,
+      'border-red-500': touched && errors,
+    },
+  );
   return (
     <div className="mb-6">
       <label htmlFor={`image-upload-${name}`} className="mb-2 block text-sm font-medium text-gray-900">
         {label}
+        <sup className="text-red-500">*</sup>
       </label>
       <div className="relative mt-2 flex w-full items-center justify-center">
-        <label
-          htmlFor={`image-upload-${name}`}
-          className="dark:hover:bg-bray-800 flex h-40 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 "
-        >
+        <label htmlFor={`image-upload-${name}`} className={classInputFile}>
           {value === '' ? (
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <svg
@@ -38,9 +43,9 @@ function InputFile({ name, label, onChange, value, touched, errors }: IInputFile
                 />
               </svg>
               <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                <span className="font-semibold">Click to upload</span> or drag and drop
+                <span className="font-semibold">Klik untuk unggah</span>
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">JPG, JPEG, PNG or BMP (MAX SIZE. 2MB)</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">JPG, JPEG, PNG or BMP (UKURAN MAKSIMUM. 2MB)</p>
             </div>
           ) : (
             <div className="mx-2 self-center sm:self-start">
@@ -54,10 +59,10 @@ function InputFile({ name, label, onChange, value, touched, errors }: IInputFile
             name={name}
             onChange={onChange}
             className="hidden"
-            // value={value}
           />
         </label>
       </div>
+      {touched && errors ? <span className="text-xs text-red-500">{errors}</span> : null}
     </div>
   );
 }

@@ -5,21 +5,21 @@ export interface IDropdown {
 
 export interface IInitialFormData {
   name: string;
-  nik: number;
-  no_kk: number;
+  nik: number | undefined;
+  no_kk: number | undefined;
   img_ktp: string;
   img_kk: string;
-  age: number;
+  age: number | undefined;
   gender: string;
   province: string;
   regency: string;
   district: string;
   village: string;
   address: string;
-  rt: number;
-  rw: number;
-  income_before_pandemic: number;
-  income_after_pandemic: number;
+  rt: number | undefined;
+  rw: number | undefined;
+  income_before_pandemic: number | undefined;
+  income_after_pandemic: number | undefined;
   reason: string;
 }
 
