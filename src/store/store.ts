@@ -6,6 +6,7 @@ import storage from 'redux-persist/lib/storage';
 import thunk, { ThunkDispatch } from 'redux-thunk';
 
 import dropdownSlice from './dropdownSlice';
+import previewSlice from './previewSlice';
 
 const logger = createLogger();
 
@@ -17,6 +18,7 @@ const persistConfig = {
 
 const reducers = combineReducers({
   dropdown: dropdownSlice,
+  preview: previewSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

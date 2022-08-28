@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import { Value } from 'classnames';
-import { useFormik, Field } from 'formik';
+import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { ActionMeta, OnChangeValue } from 'react-select';
 import * as Yup from 'yup';
@@ -13,13 +13,15 @@ import InputTextArea from '@/components/UI/Form/InputTextArea';
 import Timeline from '@/components/UI/Timeline';
 import { getProvinces, getDistricts, getRegencies, getVillages } from '@/store/dropdownSlice';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
+import { setPreviewData } from '@/store/previewSlice';
 import ConstantTimeline from '@/utils/ContantsTimeLine';
+import { initialValuesFormData } from '@/utils/InitialValues';
 import { ListReason } from '@/utils/list-data';
 
 const schemaFormUser = Yup.object().shape({
   name: Yup.string().required('Nama tidak boleh kosong'),
-  nik: Yup.string().required('NIK tidak boleh kosong').min(16, 'NIK harus 16 karakter'),
-  no_kk: Yup.string().required('Nomor KK tidak boleh kosong').min(16, 'Nomor KK harus 16 karakter'),
+  nik: Yup.number().required('NIK tidak boleh kosong').min(16, 'NIK harus 16 karakter'),
+  no_kk: Yup.number().required('Nomor KK tidak boleh kosong').min(16, 'Nomor KK harus 16 karakter'),
   img_ktp: Yup.string().required('Foto KTP tidak boleh kosong'),
   img_kk: Yup.string().required('Foto KK tidak boleh kosong'),
   age: Yup.number().required('Umur tidak boleh kosong'),
@@ -36,27 +38,7 @@ const schemaFormUser = Yup.object().shape({
   reason: Yup.string().required('Alasan membutuhkan bantuan tidak boleh kosong'),
 });
 
-const initialValuesFormData = {
-  name: '',
-  nik: '',
-  no_kk: '',
-  img_ktp: '',
-  img_kk: '',
-  age: '',
-  gender: 'Laki-laki',
-  province: '',
-  regency: '',
-  district: '',
-  village: '',
-  address: '',
-  rt: '',
-  rw: '',
-  income_before_pandemic: '',
-  income_after_pandemic: '',
-  reason: '',
-};
-
-function Home(): JSX.Element {
+export default function Home(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const provincesList = useAppSelector((state) => state.dropdown.data.provinces);
@@ -74,7 +56,7 @@ function Home(): JSX.Element {
     initialValues: initialValuesFormData,
     validationSchema: schemaFormUser,
     onSubmit: (values) => {
-      console.log(values);
+      dispatch(setPreviewData(values));
     },
   });
 
@@ -139,7 +121,8 @@ function Home(): JSX.Element {
     setAgreement(e.target.checked);
   };
 
-  console.log(agreement, selectProvince, formikFormData.values, 'selectProvince');
+  console.log(formikFormData.errors, 'errors');
+  // console.log(agreement, selectProvince, formikFormData.values, 'selectProvince');
 
   useEffect(() => {
     dispatch(getProvinces());
@@ -259,7 +242,7 @@ function Home(): JSX.Element {
                 options={provincesList}
                 name="province"
                 label="Provinsi"
-                placeholder="Pilih   Provinsi"
+                placeholder="Pilih Provinsi"
                 touched={formikFormData.touched.province}
                 errors={formikFormData.errors.province}
                 onChange={onChangeSelectAddress}
@@ -308,6 +291,34 @@ function Home(): JSX.Element {
                 touched={formikFormData.touched.address}
                 errors={formikFormData.errors.address}
               />
+            </div>
+            <div className="grid grid-cols-12 gap-4">
+              <div className="col-span-6">
+                <InputText
+                  name="rt"
+                  label="RT"
+                  type="number"
+                  placeholder="RT"
+                  value={formikFormData.values.rt}
+                  onChange={formikFormData.handleChange}
+                  touched={formikFormData.touched.rt}
+                  errors={formikFormData.errors.rt}
+                  maxLength={3}
+                />
+              </div>
+              <div className="col-span-6">
+                <InputText
+                  name="rw"
+                  label="RW"
+                  type="number"
+                  placeholder="RW"
+                  value={formikFormData.values.rw}
+                  onChange={formikFormData.handleChange}
+                  touched={formikFormData.touched.rw}
+                  errors={formikFormData.errors.rw}
+                  maxLength={3}
+                />
+              </div>
             </div>
             <InputText
               name="income_before_pandemic"
@@ -365,9 +376,4 @@ function Home(): JSX.Element {
       </div>
     </div>
   );
-}
-
-export default Home;
-function reject(error: any) {
-  throw new Error('Function not implemented.');
 }
