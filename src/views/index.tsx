@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 import { ArrowRightIcon } from '@heroicons/react/24/solid';
 import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
@@ -17,15 +16,17 @@ import Spinner from '@/components/UI/Spinner';
 import { getProvinces, getDistricts, getRegencies, getVillages } from '@/store/dropdownSlice';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { setPreviewData } from '@/store/previewSlice';
-import { initialValuesFormData } from '@/utils/InitialValues';
+import { ConvertNumberToString } from '@/utils/helper';
+import {
+  initialValuesFormData,
+  initImageAttribute,
+  initSelectedProvince,
+  initSelectedRegency,
+  initSelectedDistrict,
+  initSelectedVillage,
+} from '@/utils/InitialValues';
 import { ListReason } from '@/utils/list-data';
-
-const convertNumberToString = (number: number | undefined) => {
-  if (typeof number === 'number') {
-    return number.toString();
-  }
-  return number;
-};
+import { ISelectedValue, IImageAttribute } from '@/utils/Types';
 
 const schemaFormUser = Yup.object().shape({
   name: Yup.string().required('Nama tidak boleh kosong'),
@@ -35,7 +36,7 @@ const schemaFormUser = Yup.object().shape({
     .test(
       'nik-length',
       'NIK harus berjumlah 16 digit',
-      (val: number | undefined) => convertNumberToString(val)?.length === 16,
+      (val: number | undefined) => ConvertNumberToString(val)?.length === 16,
     ),
   no_kk: Yup.number()
     .required('Nomor KK tidak boleh kosong')
@@ -43,7 +44,7 @@ const schemaFormUser = Yup.object().shape({
     .test(
       'kk-length',
       'Nomer KK harus berjumlah 16 digit',
-      (val: number | undefined) => convertNumberToString(val)?.length === 16,
+      (val: number | undefined) => ConvertNumberToString(val)?.length === 16,
     ),
   img_ktp: Yup.string().required('Foto KTP tidak boleh kosong'),
   img_kk: Yup.string().required('Foto KK tidak boleh kosong'),
@@ -61,42 +62,7 @@ const schemaFormUser = Yup.object().shape({
   reason: Yup.string().required('Alasan membutuhkan bantuan tidak boleh kosong'),
 });
 
-interface ISelectedValue {
-  label: string | undefined;
-  value: string | undefined;
-}
-
-interface IImageAttribute {
-  name: string;
-  size: number;
-}
-
-const initImageAttribute: IImageAttribute = {
-  name: '',
-  size: 0,
-};
-
-const initSelectedProvince: ISelectedValue = {
-  label: 'Pilih Provinsi',
-  value: undefined,
-};
-
-const initSelectedRegency: ISelectedValue = {
-  label: 'Pilih Kabupaten/Kota',
-  value: undefined,
-};
-
-const initSelectedDistrict: ISelectedValue = {
-  label: 'Pilih Kecamatan',
-  value: undefined,
-};
-
-const initSelectedVillage: ISelectedValue = {
-  label: 'Pilih Desa/Kelurahan',
-  value: undefined,
-};
-
-export default function Home(): JSX.Element {
+export default function Index(): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 

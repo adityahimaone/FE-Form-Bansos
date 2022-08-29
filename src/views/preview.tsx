@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import PreviewDataImg from '@/components/UI/PreviewDataImg';
 import PreviewDataText from '@/components/UI/PreviewDataText';
 import { useAppSelector } from '@/store/hooks';
-import ConvertToIDR from '@/utils/helper';
+import { ConvertToIDR } from '@/utils/helper';
 
 export default function Preview(): JSX.Element {
   const { data: previewData } = useAppSelector((state) => state.preview);
