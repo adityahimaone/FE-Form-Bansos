@@ -1,10 +1,10 @@
 import { Outlet } from 'react-router-dom';
 
-import Header from '../UI/Header';
-import Hero from '../UI/Hero';
-
 import Timeline from '@/components/UI/Timeline';
 import ConstantTimeline from '@/utils/ContantsTimeLine';
+
+import Header from '../UI/Header';
+import Hero from '../UI/Hero';
 
 function LayoutTimeline(): JSX.Element {
   return (

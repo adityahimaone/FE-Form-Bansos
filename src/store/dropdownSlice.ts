@@ -2,9 +2,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { IDropdown, IInitialStateDropdown } from './types';
-
 import TransformDataReactSelect from '@/utils/transform-react-select';
+
+import { IDropdown, IInitialStateDropdown } from './types';
 
 const InitialStateProvince: IInitialStateDropdown = {
   loading: false,

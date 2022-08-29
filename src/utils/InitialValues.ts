@@ -1,6 +1,6 @@
-import { IInitialValuesFormData } from './Types';
-
 import { IInitialFormData } from '@/store/types';
+
+import { IInitialValuesFormData } from './Types';
 
 const initialStatePreview: IInitialFormData = {
   name: '',
