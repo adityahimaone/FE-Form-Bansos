@@ -1,14 +1,14 @@
-# Vite + React + TypeScript + Airbnb + Husky = 🔥
+# Fill Form Data Bantuan Sosial (Bansos)
 
-A modern minimal Vite + React + TypeScript template with pre-configured ESLint (with Airbnb JS/React rules), Prettier and Git hooks powered by Husky out of the box 📦
+Kementrian Sosial (Kemensos) Republik Indonesia di saat era pandemi Covid-19 harus segera memberikan bantuan kepada masyarakat Indonesia yang terdampak oleh pandemi Covid-19, oleh karena itu Kemensos memberikan arahan kepada setiap Kepala Daerah untuk mengusulkan nama-nama penerima Bantuan Sosial (Bansos).
 
-![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-![ESLint](https://img.shields.io/badge/eslint-3A33D1?style=for-the-badge&logo=eslint&logoColor=white)
-![Prettier](https://img.shields.io/badge/prettier-1A2C34?style=for-the-badge&logo=prettier&logoColor=F7BA3E)
+## Stacks
 
-![Screenshot](https://i.ibb.co/Trm88qJ/screenshot.png)
+- React Typescript
+- Redux Toolkit
+- React Router Dom
+- Tailwind CSS
+- React Select
 
 ## Features
 
@@ -16,21 +16,7 @@ A modern minimal Vite + React + TypeScript template with pre-configured ESLint (
 - 🔎 Pre-configured and extensible ESLint configuration without wrong and unused rules designed for old React versions
 - 💅 Pre-configured and extensible Prettier configuration
 - 🔬 Git hooks for code formatting and linting pre-commit
-
-## Usage
-
-```bash
-npx degit alessandropisu/vite-react-ts-minimal-template my-app
-
-cd my-app
-
-# Required if you want a repository and work with Git hooks
-git init
-
-yarn install
-
-yarn dev
-```
+- 🧩 Reusable Component
 
 ## Available commands
 

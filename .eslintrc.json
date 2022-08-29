@@ -23,9 +23,13 @@
   },
   "plugins": ["react", "@typescript-eslint", "prettier", "import"],
   "rules": {
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "jsx-a11y/label-has-associated-control": "off",
     "prettier/prettier": "error",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
+    "react-hooks/exhaustive-deps": "off",
     "react/jsx-no-bind": "off",
     "import/order": [
       "error",

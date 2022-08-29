@@ -1,10 +1,16 @@
-import './App.css';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
-function App() {
+import RoutesViews from './routes/Main';
+import { store, persistor } from './store/store';
+
+function App(): JSX.Element {
   return (
-    <div className="App">
-      <h1>Starter</h1>
-    </div>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <RoutesViews />
+      </PersistGate>
+    </Provider>
   );
 }
 
