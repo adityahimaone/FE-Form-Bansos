@@ -1,5 +1,6 @@
-/* eslint-disable import/prefer-default-export */
-export const ListReason = [
+import { IListHeader, IListReason } from './Types';
+
+export const ListReason: IListReason[] = [
   {
     value: '1',
     label: 'Kehilangan pekerjaan',
@@ -11,5 +12,18 @@ export const ListReason = [
   {
     value: '3',
     label: 'Tergolong fakir/miskin semenjak sebelum Covid-19',
+  },
+];
+
+export const listHeader: IListHeader[] = [
+  {
+    id: 1,
+    label: 'Home',
+    url: '/',
+  },
+  {
+    id: 2,
+    label: 'About',
+    url: '/about',
   },
 ];

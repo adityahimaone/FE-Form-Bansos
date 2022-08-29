@@ -4,14 +4,15 @@ import { Link } from 'react-router-dom';
 import PreviewDataImg from '@/components/UI/PreviewDataImg';
 import PreviewDataText from '@/components/UI/PreviewDataText';
 import { useAppSelector } from '@/store/hooks';
+import ConvertToIDR from '@/utils/helper';
 
-function Preview() {
+export default function Preview(): JSX.Element {
   const { data: previewData } = useAppSelector((state) => state.preview);
 
   return (
     <div className="w-100 rounded-md bg-white p-4 shadow-sm">
       <div className="mb-4">
-        <h1 className="text-xl font-bold">Hasil Preview</h1>
+        <h1 className="text-xl font-bold">Hasil Pratinjau</h1>
       </div>
       <div>
         <PreviewDataText name={previewData.name} label="Nama" />
@@ -26,8 +27,8 @@ function Preview() {
         <PreviewDataText name={previewData.regency} label="Kabupaten/Kota" />
         <PreviewDataText name={previewData.district} label="Kecamatan" />
         <PreviewDataText name={previewData.village} label="Desa/Kelurahan" />
-        <PreviewDataText name={previewData.income_before_pandemic} label="Pendapatan Sebelum Pandemi" />
-        <PreviewDataText name={previewData.income_after_pandemic} label="Pendapatan Sesudah Pandemi" />
+        <PreviewDataText name={ConvertToIDR(previewData.income_before_pandemic)} label="Pendapatan Sebelum Pandemi" />
+        <PreviewDataText name={ConvertToIDR(previewData.income_after_pandemic)} label="Pendapatan Sesudah Pandemi" />
         <PreviewDataText name={previewData.reason} label="Alasan membutuhkan bantuan" />
         <PreviewDataImg url={previewData.img_ktp} label="Foto KTP" />
         <PreviewDataImg url={previewData.img_kk} label="Foto KK" />
@@ -41,5 +42,3 @@ function Preview() {
     </div>
   );
 }
-
-export default Preview;

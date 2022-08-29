@@ -2,6 +2,7 @@
 interface ITimline {
   id: number;
   title: string;
+  url: string;
   description: string;
   icon: JSX.Element;
 }
@@ -30,4 +31,15 @@ interface IInitialValuesFormData {
   reason: string;
 }
 
-export type { ITimline, ITimelineArray, IInitialValuesFormData };
+interface IListReason {
+  value: string;
+  label: string;
+}
+
+interface IListHeader {
+  id: number;
+  label: string;
+  url: string;
+}
+
+export type { ITimline, ITimelineArray, IInitialValuesFormData, IListReason, IListHeader };

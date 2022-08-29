@@ -105,7 +105,7 @@ export default function Home(): JSX.Element {
   const districtsList = useAppSelector((state) => state.dropdown.data.districts);
   const villagesList = useAppSelector((state) => state.dropdown.data.villages);
 
-  const [sendStatus, setSendStatus] = useState<string>('');
+  const [, setSendStatus] = useState<string>('');
   const [loadingSendData, setLoadingSendData] = useState<boolean>(false);
   const [selectProvince, setSelectProvince] = useState<ISelectedValue>(initSelectedProvince);
   const [selectRegency, setSelectRegency] = useState<ISelectedValue>(initSelectedRegency);
@@ -132,19 +132,21 @@ export default function Home(): JSX.Element {
         return;
       }
       if (random > 0.5) {
-        toast.success('Data berhasil dikirim');
+        toast.success('Berhasil mengirim data');
         const nav = setTimeout(() => {
-          setLoadingSendData(false);
           setSendStatus('success');
+          setLoadingSendData(false);
           dispatch(setPreviewData(values));
           navigate('/preview');
+          window.scrollTo(0, 0);
           clearTimeout(nav);
         }, 1500);
+        return;
       }
+      toast.error('Gagal mengirim data: Interval Server Error');
       const nav = setTimeout(() => {
-        toast.error('Gagal mengirim data: Interval Server Error');
-        setLoadingSendData(false);
         setSendStatus('failed');
+        setLoadingSendData(false);
         clearTimeout(nav);
       }, 1500);
     },
@@ -185,7 +187,7 @@ export default function Home(): JSX.Element {
     }
   };
 
-  const onChangeSelectReason = (value: OnChangeValue<SelectValue, false>, actionMeta: ActionMeta<SelectValue>) => {
+  const onChangeSelectReason = (value: OnChangeValue<SelectValue, false>) => {
     formikFormData.setFieldValue('reason', value?.label);
   };
 
@@ -251,7 +253,7 @@ export default function Home(): JSX.Element {
     <div className="w-100 rounded-md bg-white p-4 shadow-sm">
       <Toaster position="top-center" reverseOrder={false} />
       <div>
-        <h1 className="text-xl font-semibold">Isi Data Diri</h1>
+        <h1 className="text-xl font-semibold">Form Data Diri</h1>
       </div>
       <form onSubmit={formikFormData.handleSubmit} className="mt-5">
         <InputText

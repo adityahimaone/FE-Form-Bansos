@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useMatch } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { ITimline } from '@/utils/Types';
 
@@ -8,8 +8,7 @@ interface TypesTimeline {
 }
 
 function Timeline({ timelineData }: TypesTimeline): JSX.Element {
-  const matchHome = useMatch('/');
-  const matchPreviw = useMatch('/preview');
+  const location = useLocation();
 
   return (
     <ol className="relative border-l border-gray-200">
@@ -18,7 +17,14 @@ function Timeline({ timelineData }: TypesTimeline): JSX.Element {
           <span className="absolute -left-3 flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-white ring-8 ring-white ">
             {item.icon}
           </span>
-          <h3 className="mb-1 text-lg font-semibold text-gray-900">{item.title}</h3>
+          <h3
+            className={classNames('mb-1 text-lg font-semibold ', {
+              'text-blue-500': location.pathname === item.url,
+              'text-gray-900': location.pathname !== item.url,
+            })}
+          >
+            {item.title}
+          </h3>
           <p className="text-base font-normal text-gray-500">{item.description}</p>
         </li>
       ))}
