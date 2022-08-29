@@ -42,4 +42,22 @@ interface IListHeader {
   url: string;
 }
 
-export type { ITimline, ITimelineArray, IInitialValuesFormData, IListReason, IListHeader };
+interface ISelectedValue {
+  label: string | undefined;
+  value: string | undefined;
+}
+
+interface IImageAttribute {
+  name: string;
+  size: number;
+}
+
+export type {
+  ITimline,
+  ITimelineArray,
+  IInitialValuesFormData,
+  IListReason,
+  IListHeader,
+  ISelectedValue,
+  IImageAttribute,
+};

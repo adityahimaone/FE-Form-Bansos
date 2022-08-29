@@ -2,9 +2,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { IDropdown, IInitialStateDropdown } from './types';
-
 import TransformDataReactSelect from '@/utils/transform-react-select';
+
+import { IDropdown, IInitialStateDropdown } from './types';
 
 const InitialStateProvince: IInitialStateDropdown = {
   loading: false,
@@ -18,22 +18,22 @@ const InitialStateProvince: IInitialStateDropdown = {
 };
 
 export const getProvinces = createAsyncThunk('get/fetchProvinces', async () => {
-  const response = await axios.get('http://www.emsifa.com/api-wilayah-indonesia/api/provinces.json');
+  const response = await axios.get('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json');
   return response.data;
 });
 
 export const getRegencies = createAsyncThunk('get/fetchRegencies', async (provinceId: string | undefined) => {
-  const response = await axios.get(`http://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provinceId}.json`);
+  const response = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provinceId}.json`);
   return response.data;
 });
 
 export const getDistricts = createAsyncThunk('get/fetchDistricts', async (regencyId: string | undefined) => {
-  const response = await axios.get(`http://www.emsifa.com/api-wilayah-indonesia/api/districts/${regencyId}.json`);
+  const response = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${regencyId}.json`);
   return response.data;
 });
 
 export const getVillages = createAsyncThunk('get/fetchVillages', async (villagesId: string | undefined) => {
-  const response = await axios.get(`http://www.emsifa.com/api-wilayah-indonesia/api/villages/${villagesId}.json`);
+  const response = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${villagesId}.json`);
   return response.data;
 });
 

@@ -1,4 +1,4 @@
-const ConvertToIDR = (number: number | bigint | undefined) =>
+export const ConvertToIDR = (number: number | bigint | undefined) =>
   typeof number === 'number' || typeof number === 'bigint'
     ? new Intl.NumberFormat('id-ID', {
         style: 'currency',
@@ -7,4 +7,9 @@ const ConvertToIDR = (number: number | bigint | undefined) =>
       }).format(number)
     : number;
 
-export default ConvertToIDR;
+export const ConvertNumberToString = (number: number | undefined) => {
+  if (typeof number === 'number') {
+    return number.toString();
+  }
+  return number;
+};

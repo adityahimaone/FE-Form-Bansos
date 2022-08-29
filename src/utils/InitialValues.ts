@@ -1,6 +1,6 @@
-import { IInitialValuesFormData } from './Types';
-
 import { IInitialFormData } from '@/store/types';
+
+import { IInitialValuesFormData, ISelectedValue, IImageAttribute } from './Types';
 
 const initialStatePreview: IInitialFormData = {
   name: '',
@@ -42,4 +42,37 @@ const initialValuesFormData: IInitialValuesFormData = {
   reason: '',
 };
 
-export { initialStatePreview, initialValuesFormData };
+const initImageAttribute: IImageAttribute = {
+  name: '',
+  size: 0,
+};
+
+const initSelectedProvince: ISelectedValue = {
+  label: 'Pilih Provinsi',
+  value: undefined,
+};
+
+const initSelectedRegency: ISelectedValue = {
+  label: 'Pilih Kabupaten/Kota',
+  value: undefined,
+};
+
+const initSelectedDistrict: ISelectedValue = {
+  label: 'Pilih Kecamatan',
+  value: undefined,
+};
+
+const initSelectedVillage: ISelectedValue = {
+  label: 'Pilih Desa/Kelurahan',
+  value: undefined,
+};
+
+export {
+  initialStatePreview,
+  initialValuesFormData,
+  initImageAttribute,
+  initSelectedProvince,
+  initSelectedRegency,
+  initSelectedDistrict,
+  initSelectedVillage,
+};

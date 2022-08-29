@@ -23,7 +23,6 @@
   },
   "plugins": ["react", "@typescript-eslint", "prettier", "import"],
   "rules": {
-    "import/no-unresolved": "off",
     "import/extensions": "off",
     "jsx-a11y/label-has-associated-control": "off",
     "prettier/prettier": "error",
@@ -51,5 +50,13 @@
         "warnOnUnassignedImports": true
       }
     ]
+  },
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {}
+    }
   }
 }
